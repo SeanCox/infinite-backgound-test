@@ -3,17 +3,14 @@ import logo from "./logo.svg";
 import "./App.css";
 
 function App() {
-  useEffect(
-    () => async () => {
+    const test = async () => {
       try {
         await CSS.paintWorklet.addModule("worklet/infiniteBackground.js");
       } catch (e) {
         console.log(e);
       }
-    },
-    []
-  );
-
+    }
+    test()
   return (
     <div className="App">
       <header className="App-header">

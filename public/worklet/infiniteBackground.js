@@ -44,13 +44,19 @@ const colors = colorGenerator1();
 
 class InfiniteBackgroundPainter {
   paint(ctx, geom, properties) {
-    console.log(geom.width);
-    const numberOfBlocks = Math.ceil(geom.height / 1200);
+    const backgroundWidth = geom.width
+    const backgroundHeight = geom.height
+    const blobSize = backgroundWidth > 768 ? 600: 400
+
+    const rightBackgroundOffset = Math.floor(backgroundWidth - blobSize/2)
+
+    const numberOfBlocks = Math.ceil(backgroundHeight/ 1200);
     for (let i = 0; i < numberOfBlocks; i += 1) {
-      ctx.fillStyle = `${colors.next().value}`;
-      ctx.fillRect(-200, 1200 * i, 400, 400);
-      ctx.fillStyle = `${colors.next().value}`;
-      ctx.fillRect(400, 1200 * i + 600, 400, 400);
+      ctx.fillStyle = colors.next().value
+      ctx.fillRect(-blobSize/2, 1200 * i, blobSize, blobSize);
+
+      ctx.fillStyle = colors.next().value
+      ctx.fillRect(rightBackgroundOffset, 1200 * i + blobSize+200, blobSize, blobSize);
     }
   }
 }
