@@ -40,10 +40,10 @@ function* colorGenerator4() {
   }
 }
 
-const colors = colorGenerator1();
 
 class InfiniteBackgroundPainter {
   paint(ctx, geom, properties) {
+    const colors = colorGenerator1();
     const backgroundWidth = geom.width
     const backgroundHeight = geom.height
     const blobSize = backgroundWidth > 768 ? 600: 400
