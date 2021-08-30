@@ -1,7 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
+  useEffect(
+    () => async () => {
+      try {
+        await CSS.paintWorklet.addModule("worklet/infiniteBackground.js");
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    []
+  );
+
   return (
     <div className="App">
       <header className="App-header">
