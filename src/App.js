@@ -6,7 +6,7 @@ function App() {
 
  useEffect( () => {
       try {
-         CSS.paintWorklet.addModule("worklet/infiniteBackground.js");
+         CSS.paintWorklet.addModule("worklet/blobTest.js");
       } catch (e) {
         console.log(e);
       }
