@@ -40,52 +40,85 @@ function* colorGenerator4() {
   }
 }
 
-function renderBlob (ctx, color, size, startingPointX, startingPointY){
-    
-    ctx.beginPath()
-    ctx.moveTo(startingPointX,startingPointY)
+function generatePolygonPoints(size, sides) {
+  const polygonPoints = [];
+  const angle = 360 / sides;
+  const radian = (angle * Math.PI) / 180;
+  const offsetRotation = Math.PI / 2;
+  const halfSize = size / 2;
 
-    ctx.lineTo(startingPointX + size/2, startingPointY)
-    ctx.lineTo(startingPointX + (size/4)*3, startingPointY + size/4)
-    ctx.lineTo(startingPointX + (size/4)*3, startingPointY + (size/4)*3)
-    ctx.lineTo(startingPointX + (size/2), startingPointY + size)
-    ctx.lineTo(startingPointX,  startingPointY + size)
-    ctx.lineTo(startingPointX - (size/4), startingPointY + (size/4)*3)
-    ctx.lineTo(startingPointX - (size/4), startingPointY + size/4)
-    ctx.lineTo(startingPointX, startingPointY )
-    
-    // ctx.stroke()
-
-
-
-    // ctx.quadraticCurveTo(150, 50, 200, 100)
-    // ctx.quadraticCurveTo(250, 125, 200, 200)
-    // ctx.quadraticCurveTo(150, 250, 100, 200)
-    // ctx.quadraticCurveTo(50, 150, 100, 100)
-
-    ctx.fillStyle = color 
-    ctx.fill()
-
+  for (let i = 0; i < sides; i += 1) {
+    polygonPoints.push({
+      offsetX: Math.round(
+        (Math.cos(radian * i - offsetRotation) + 1) * halfSize
+      ),
+      offsetY: Math.round(
+        (Math.sin(radian * i - offsetRotation) + 1) * halfSize
+      ),
+      quadraticPointX: Math.round(
+        (Math.cos(
+          radian * i - offsetRotation - radian / 2 + Math.random() / 4 - 0.25
+        ) +
+          1) *
+          (halfSize + Math.random() * 100)
+      ),
+      quadraticPointY: Math.round(
+        (Math.sin(
+          radian * i - offsetRotation - radian / 2 + Math.random() / 4 - 0.25
+        ) +
+          1) *
+          (halfSize + Math.random() * 100)
+      ),
+    });
+  }
+  return polygonPoints;
 }
 
+function drawPolygon(ctx, color, points, positionX, positionY) {
+  ctx.beginPath();
+
+  points.forEach((point) => {
+    ctx.quadraticCurveTo(
+      point.quadraticPointX + positionX,
+      point.quadraticPointY + positionY,
+      point.offsetX + positionX,
+      point.offsetY + positionY
+    );
+  });
+
+  ctx.fillStyle = color;
+  ctx.fill();
+}
 
 class InfiniteBackgroundPainter {
   paint(ctx, geom, properties) {
     const colors = colorGenerator3();
-       const backgroundWidth = geom.width
-    const backgroundHeight = geom.height
-    const blobSize = backgroundWidth > 768 ? 600: 400
-    const blobHeightOffset = blobSize * 2 + 400
-    const rightBackgroundOffset = Math.floor(backgroundWidth - blobSize/2)
+    const backgroundWidth = geom.width;
+    const backgroundHeight = geom.height;
+    const blobSize = backgroundWidth > 768 ? 600 : 400;
+    const blobHeightOffset = blobSize * 2 + 400;
+    const rightBackgroundOffset = Math.floor(backgroundWidth - blobSize / 2);
 
-    const numberOfBlocks = Math.ceil(backgroundHeight/ 1200);
+    const numberOfBlocks = Math.ceil(backgroundHeight / 1200);
 
     for (let i = 0; i < numberOfBlocks; i += 1) {
-        renderBlob(ctx, colors.next().value, blobSize, 0 , blobHeightOffset *i)
-        renderBlob(ctx, colors.next().value, blobSize, rightBackgroundOffset, blobHeightOffset *i +blobSize+200)
-
-    } 
-   }
+      const polygonPoints = generatePolygonPoints(blobSize, 8);
+      drawPolygon(
+        ctx,
+        colors.next().value,
+        polygonPoints,
+        0,
+        i * blobHeightOffset
+      );
+      drawPolygon(
+        ctx,
+        colors.next().value,
+        polygonPoints,
+        rightBackgroundOffset,
+        blobHeightOffset * (i + 0.5)
+      );
+    }
+  }
 }
 
 // Register our class under a specific name

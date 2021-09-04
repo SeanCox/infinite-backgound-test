@@ -3,15 +3,13 @@ import logo from "./logo.svg";
 import "./App.css";
 
 function App() {
-
- useEffect( () => {
-      try {
-         CSS.paintWorklet.addModule("worklet/blobTest.js");
-      } catch (e) {
-        console.log(e);
-      }
-    },[]
- )
+  useEffect(() => {
+    try {
+      CSS.paintWorklet.addModule("worklet/blobTest.js");
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
 
   return (
     <div className="App">
