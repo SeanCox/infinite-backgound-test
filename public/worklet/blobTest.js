@@ -76,10 +76,10 @@ function generatePolygonPoints(size, sides) {
   return polygonPoints;
 }
 
-function randomIntFromInterval(min, max) {
-  // min and max included
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
+// function randomIntFromInterval(min, max) {
+//   // min and max included
+//   return Math.floor(Math.random() * (max - min + 1) + min);
+// }
 
 function drawPolygon(ctx, color, points, positionX, positionY) {
   console.log(points);
@@ -90,7 +90,6 @@ function drawPolygon(ctx, color, points, positionX, positionY) {
 
   points.forEach((point) => {
     console.log(previousX, previousY);
-    previousY = previousY 
     ctx.quadraticCurveTo(
       previousX,
       previousY,
@@ -102,36 +101,34 @@ function drawPolygon(ctx, color, points, positionX, positionY) {
     previousY = point.offsetY + positionY;
   });
 
-  const point = points[0]
-    ctx.quadraticCurveTo(
-      previousX,
-      previousY,
-      (point.offsetX + positionX + previousX) / 2,
-      (point.offsetY + positionY + previousY) / 2
-    );
-
+  const point = points[0];
+  ctx.quadraticCurveTo(
+    previousX,
+    previousY,
+    (point.offsetX + positionX + previousX) / 2,
+    (point.offsetY + positionY + previousY) / 2
+  );
 
   ctx.fillStyle = color;
   ctx.fill();
 
   // show points
-  previousX = points[points.length - 1].offsetX + positionX;
-  previousY = points[points.length - 1].offsetY + positionY;
-  points.forEach((point) => {
-    previousY = previousY 
-    ctx.fillStyle = "cadetblue";
-    ctx.fillRect(previousX, previousY, 10, 10);
+  // previousX = points[points.length - 1].offsetX + positionX;
+  // previousY = points[points.length - 1].offsetY + positionY;
+  // points.forEach((point) => {
+  //   ctx.fillStyle = "cadetblue";
+  //   ctx.fillRect(previousX, previousY, 10, 10);
 
-    ctx.fillStyle = "limegreen";
-    ctx.fillRect(
-      (point.offsetX + positionX + previousX) / 2,
-      (point.offsetY + positionY + previousY) / 2,
-      10,
-      10
-    );
-    previousX = point.offsetX + positionX;
-    previousY = point.offsetY + positionY;
-  });
+  //   ctx.fillStyle = "limegreen";
+  //   ctx.fillRect(
+  //     (point.offsetX + positionX + previousX) / 2,
+  //     (point.offsetY + positionY + previousY) / 2,
+  //     10,
+  //     10
+  //   );
+  //   previousX = point.offsetX + positionX;
+  //   previousY = point.offsetY + positionY;
+  // });
   // end show points
 }
 
