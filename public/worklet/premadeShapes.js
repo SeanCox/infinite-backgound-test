@@ -130,14 +130,14 @@ function drawShape2(ctx, color, points, positionX, positionY, size) {
     points[3].offsetY + positionY
   );
   ctx.quadraticCurveTo(
-    positionX + 100,
-    positionY + 300,
+    points[4].offsetX + positionX - size/24,
+    points[4].offsetY + positionY  +size/3,
     points[4].offsetX + positionX,
     points[4].offsetY + positionY
   );
   ctx.quadraticCurveTo(
-    positionX + 0,
-    positionY + 0,
+    points[0].offsetX + positionX - size/2,
+    points[0].offsetY + positionY,
     points[0].offsetX + positionX,
     points[0].offsetY + positionY
   );
@@ -217,8 +217,8 @@ class InfiniteBackgroundPainter {
           ctx,
           colors.next().value,
           polygonPoints,
-          -0,
-          i * blobHeightOffset,
+          -blobSize/2,
+          i * blobHeightOffset ,
           blobSize
         );
       drawShapes
