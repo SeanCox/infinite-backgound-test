@@ -5,7 +5,7 @@ import "./App.css";
 function App() {
   useEffect(() => {
     try {
-      CSS.paintWorklet.addModule("worklet/blobTest.js");
+      CSS.paintWorklet.addModule("worklet/premadeShapes.js");
     } catch (e) {
       console.log(e);
     }
