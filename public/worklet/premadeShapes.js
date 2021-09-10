@@ -30,7 +30,7 @@ function createPolygonPoints(size, sides) {
 function shapesWithBackgroundColor(colorGenerator) {
   return class ShapesBackgroundPainter {
     paint(ctx, geom, properties) {
-      const colors = colorGenerator;
+      const colors = colorGenerator();
       const drawShapes = shapeGenerator();
       const backgroundWidth = geom.width;
       const backgroundHeight = geom.height;
@@ -70,17 +70,17 @@ function shapesWithBackgroundColor(colorGenerator) {
 // Register our class under a specific name
 registerPaint(
   "shapesBackground1",
-  shapesWithBackgroundColor(colorGenerator1())
+  shapesWithBackgroundColor(colorGenerator1)
 );
 registerPaint(
   "shapesBackground2",
-  shapesWithBackgroundColor(colorGenerator2())
+  shapesWithBackgroundColor(colorGenerator2)
 );
 registerPaint(
   "shapesBackground3",
-  shapesWithBackgroundColor(colorGenerator3())
+  shapesWithBackgroundColor(colorGenerator3)
 );
 registerPaint(
   "shapesBackground4",
-  shapesWithBackgroundColor(colorGenerator4())
+  shapesWithBackgroundColor(colorGenerator4)
 );
