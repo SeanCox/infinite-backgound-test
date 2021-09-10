@@ -130,13 +130,13 @@ function drawShape2(ctx, color, points, positionX, positionY, size) {
     points[3].offsetY + positionY
   );
   ctx.quadraticCurveTo(
-    points[4].offsetX + positionX - size/24,
-    points[4].offsetY + positionY  +size/3,
+    points[4].offsetX + positionX - size / 24,
+    points[4].offsetY + positionY + size / 3,
     points[4].offsetX + positionX,
     points[4].offsetY + positionY
   );
   ctx.quadraticCurveTo(
-    points[0].offsetX + positionX - size/2,
+    points[0].offsetX + positionX - size / 2,
     points[0].offsetY + positionY,
     points[0].offsetX + positionX,
     points[0].offsetY + positionY
@@ -155,33 +155,33 @@ function drawShape3(ctx, color, points, positionX, positionY, size) {
 
   ctx.moveTo(points[0].offsetX + positionX, points[0].offsetY + positionY);
   ctx.quadraticCurveTo(
-    points[1].offsetX + positionX + size/6,
-    points[1].offsetY + positionY - size/3,
+    points[1].offsetX + positionX + size / 6,
+    points[1].offsetY + positionY - size / 3,
     points[1].offsetX + positionX,
     points[1].offsetY + positionY
   );
   ctx.quadraticCurveTo(
-    points[2].offsetX + positionX - size/6,
-    points[2].offsetY + positionY - size/6,
-    points[2].offsetX + positionX - size/6,
-    points[2].offsetY + positionY - size/6 
+    points[2].offsetX + positionX - size / 6,
+    points[2].offsetY + positionY - size / 6,
+    points[2].offsetX + positionX - size / 6,
+    points[2].offsetY + positionY - size / 6
   );
   ctx.quadraticCurveTo(
-    points[3].offsetX + positionX + size/6,
-    points[3].offsetY + positionY + size/6,
+    points[3].offsetX + positionX + size / 6,
+    points[3].offsetY + positionY + size / 6,
     points[3].offsetX + positionX,
     points[3].offsetY + positionY
   );
   ctx.quadraticCurveTo(
-    points[4].offsetX + positionX - size/3,
-    points[4].offsetY + positionY - size/12,
+    points[4].offsetX + positionX - size / 3,
+    points[4].offsetY + positionY - size / 12,
     points[4].offsetX + positionX,
     points[4].offsetY + positionY
   );
   ctx.quadraticCurveTo(
-    points[0].offsetX + positionX - size/3,
-    points[0].offsetY + positionY - size/12,
-    points[0].offsetX + positionX, 
+    points[0].offsetX + positionX - size / 3,
+    points[0].offsetY + positionY - size / 12,
+    points[0].offsetX + positionX,
     points[0].offsetY + positionY
   );
 
@@ -191,49 +191,66 @@ function drawShape3(ctx, color, points, positionX, positionY, size) {
 
 function* shapeGenerator() {
   while (true) {
-    yield drawShape3;
     yield drawShape1;
     yield drawShape2;
+    yield drawShape3;
   }
 }
 
-class InfiniteBackgroundPainter {
-  paint(ctx, geom, properties) {
-    const colors = colorGenerator3();
-    const drawShapes = shapeGenerator();
-    const backgroundWidth = geom.width;
-    const backgroundHeight = geom.height;
-    const blobSize = backgroundWidth > 768 ? 600 : 400;
-    const blobHeightOffset = blobSize * 2 + 800;
-    const rightBackgroundOffset = Math.floor(backgroundWidth - blobSize / 2);
+function shapesWithBackgroundColor(colorGenerator) {
+  return class InfiniteBackgroundPainter {
+    paint(ctx, geom, properties) {
+      const colors = colorGenerator;
+      const drawShapes = shapeGenerator();
+      const backgroundWidth = geom.width;
+      const backgroundHeight = geom.height;
+      const blobSize = backgroundWidth > 768 ? 600 : 400;
+      const blobHeightOffset = blobSize * 2 + 600;
+      const rightBackgroundOffset = Math.floor(backgroundWidth - blobSize / 2);
 
-    const numberOfBlocks = Math.ceil(backgroundHeight / 1200);
+      const numberOfBlocks = Math.ceil(backgroundHeight / 1200);
 
-    for (let i = 0; i < numberOfBlocks; i += 1) {
-      const polygonPoints = generatePolygonPoints(blobSize, 5);
-      drawShapes
-        .next()
-        .value(
-          ctx,
-          colors.next().value,
-          polygonPoints,
-          -blobSize/2,
-          i * blobHeightOffset ,
-          blobSize
-        );
-      drawShapes
-        .next()
-        .value(
-          ctx,
-          colors.next().value,
-          polygonPoints,
-          rightBackgroundOffset,
-          blobHeightOffset * (i + 0.5),
-          blobSize
-        );
+      for (let i = 0; i < numberOfBlocks; i += 1) {
+        const polygonPoints = generatePolygonPoints(blobSize, 5);
+        drawShapes
+          .next()
+          .value(
+            ctx,
+            colors.next().value,
+            polygonPoints,
+            -blobSize / 2,
+            i * blobHeightOffset,
+            blobSize
+          );
+        drawShapes
+          .next()
+          .value(
+            ctx,
+            colors.next().value,
+            polygonPoints,
+            rightBackgroundOffset,
+            blobHeightOffset * (i + 0.5),
+            blobSize
+          );
+      }
     }
-  }
+  };
 }
 
 // Register our class under a specific name
-registerPaint("infiniteBackground", InfiniteBackgroundPainter);
+registerPaint(
+  "shapesBackground1",
+  shapesWithBackgroundColor(colorGenerator1())
+);
+registerPaint(
+  "shapesBackground2",
+  shapesWithBackgroundColor(colorGenerator2())
+);
+registerPaint(
+  "shapesBackground3",
+  shapesWithBackgroundColor(colorGenerator3())
+);
+registerPaint(
+  "shapesBackground4",
+  shapesWithBackgroundColor(colorGenerator4())
+);
