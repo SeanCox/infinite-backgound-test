@@ -1,4 +1,3 @@
-
 function drawShape1(ctx, color, points, positionX, positionY, size) {
   ctx.lineWidth = 50;
   ctx.lineCap = "round";
@@ -128,12 +127,10 @@ function drawShape3(ctx, color, points, positionX, positionY, size) {
   ctx.fill();
 }
 
-function* shapeGenerator() {
+export default function* shapeGenerator() {
   while (true) {
     yield drawShape1;
     yield drawShape2;
     yield drawShape3;
   }
 }
-
-export default shapeGenerator

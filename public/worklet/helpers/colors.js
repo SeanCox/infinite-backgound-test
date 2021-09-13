@@ -40,5 +40,4 @@ function* colorGenerator4() {
   }
 }
 
-export default colorGenerator3;
-export {colorGenerator1, colorGenerator2,colorGenerator3,colorGenerator4}
+export { colorGenerator1, colorGenerator2, colorGenerator3, colorGenerator4 };

@@ -40,5 +40,19 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
+  <script type="text/javascript">
+    // ⚠️ Handle Firefox and Safari by importing a polyfill for CSS Pain
+    (async function () {
+      if (CSS["paintWorklet"] === undefined) {
+        await import("https://unpkg.com/css-paint-polyfill");
+      }
 
+      try {
+        CSS.paintWorklet.addModule("./worklet/premadeShapes.js");
+      } catch (e) {
+        console.log(e);
+      }
+    })();
+  </script>
+  <!-- <script type="module" src="./worklet/premadeShapes.js"></script> -->
 </html>

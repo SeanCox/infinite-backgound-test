@@ -1,16 +1,7 @@
-import { useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
 function App() {
-  useEffect(() => {
-    try {
-      CSS.paintWorklet.addModule("worklet/premadeShapes.js");
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
-
   return (
     <div className="App">
       <header className="App-header">
